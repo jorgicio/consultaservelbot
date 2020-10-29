@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'telegram/bot'
 require './servel.rb'
 # encoding: UTF-8
