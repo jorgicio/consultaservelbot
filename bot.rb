@@ -6,6 +6,12 @@ require './servel.rb'
 
 token = ENV['BOT_TOKEN_RUBY']
 
+def splitRut(rut)
+  chars = rut.chars
+  chars.pop
+  return [chars.join,rut[-1]]
+end
+
 Telegram::Bot::Client.run(token) do |bot|
   bot.listen do |message|
     data = message.text.split(" ")
@@ -14,13 +20,9 @@ Telegram::Bot::Client.run(token) do |bot|
     case data[0]
     when '/consultar'
       if data[1] != nil and data[1] =~ /\d/
-        rut = data[1].split('-')
+        rut = splitRut(data[1])
         dv = [*0..9,'K'][rut[0].to_s.reverse.chars.inject([0,0]){|(i,a),n|[i+1,a-n.to_i*(i%6+2)]}[1]%11]
-        if rut[1].upcase == 'K'
-            rut_v = 'K'
-        else
-            rut_v = rut[1].to_i
-        end
+        rut_v = rut[1].upcase == 'K' ? 'K' : rut[1].to_i
         if dv != rut_v
             bot.api.send_message(chat_id: message.chat.id, text: "Rut no válido. Favor, ingresarlo siguendo el formato 12345678-9")
         else
