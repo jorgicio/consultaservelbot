@@ -24,7 +24,7 @@ Telegram::Bot::Client.run(token) do |bot|
         dv = [*0..9,'K'][rut[0].to_s.reverse.chars.inject([0,0]){|(i,a),n|[i+1,a-n.to_i*(i%6+2)]}[1]%11]
         rut_v = rut[1].upcase == 'K' ? 'K' : rut[1].to_i
         if dv != rut_v
-            bot.api.send_message(chat_id: message.chat.id, text: "Rut no válido. Favor, ingresarlo siguendo el formato 12345678-9")
+            bot.api.send_message(chat_id: message.chat.id, text: "Rut inválido. Por favor, ingrese un rut válido.")
         else
             ser = ServelConsulta.new(appId,fid,rut[0])
             datos_servel = ser.consultaServel
@@ -50,10 +50,10 @@ Telegram::Bot::Client.run(token) do |bot|
             end
         end
       else
-          bot.api.send_message(chat_id: message.chat.id, text: "Rut inválido o no ingresado. Favor usar el formato 12345678-9")
+          bot.api.send_message(chat_id: message.chat.id, text: "Rut inválido o no ingresado.")
       end
     when '/ayuda'
-        bot.api.send_message(chat_id: message.chat.id, text: "Consulta con el comando /consultar RUT, sin puntos y con el dígito verificador separado de un guion.\nEjemplo: /consultar 12345678-9")
+        bot.api.send_message(chat_id: message.chat.id, text: "Consulta con el comando /consultar RUT, sin puntos ni guion.\nEjemplo: /consultar 123456789")
     when '/about'
         string_about = "Consulta Servel, un bot creado por Jorgicio. \n"
         string_about += "Si te gusta lo que hago, puedes visitar mi página web: www.jorgicio.net\n"
