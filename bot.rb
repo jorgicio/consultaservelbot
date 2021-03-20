@@ -24,7 +24,7 @@ Telegram::Bot::Client.run(token) do |bot|
         dv = [*0..9,'K'][rut[0].to_s.reverse.chars.inject([0,0]){|(i,a),n|[i+1,a-n.to_i*(i%6+2)]}[1]%11]
         rut_v = rut[1].upcase == 'K' ? 'K' : rut[1].to_i
         if dv != rut_v
-            bot.api.send_message(chat_id: message.chat.id, text: "Rut inválido. Por favor, ingrese un rut válido.")
+            bot.api.send_message(chat_id: message.chat.id, text: "Rut inválido. Por favor, ingrese un rut válido, sin puntos ni guion.")
         else
             ser = ServelConsulta.new(appId,fid,rut[0])
             datos_servel = ser.consultaServel
